@@ -33,7 +33,16 @@ class ListDetailActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.list_detail_activity)
+        binding = ListDetailActivityBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(this,
+            MainViewModelFactory(PreferenceManager.getDefaultSharedPreferences(this))).get(MainViewModel::class.java)
+        viewModel.list = intent.getParcelableExtra(MainActivity.INTENT_LIST_KEY)!!
+        val view = binding.root
 
+        setContentView(view)
+
+        binding.addTaskButton.setOnClickListener{
+            showCreateTaskDialog()
         //list = intent.getParcelableExtra(MainActivity.INTENT_LIST_KEY)!!
 
         title = viewModel.list.name
@@ -44,16 +53,7 @@ class ListDetailActivity : AppCompatActivity() {
                 .commitNow()
         }
 
-        binding = ListDetailActivityBinding.inflate(layoutInflater)
-        viewModel = ViewModelProvider(this,
-        MainViewModelFactory(PreferenceManager.getDefaultSharedPreferences(this))).get(MainViewModel::class.java)
-        viewModel.list = intent.getParcelableExtra(MainActivity.INTENT_LIST_KEY)!!
-        val view = binding.root
 
-        setContentView(view)
-
-        binding.addTaskButton.setOnClickListener{
-            showCreateTaskDialog()
         }
     }
         private fun showCreateTaskDialog() {

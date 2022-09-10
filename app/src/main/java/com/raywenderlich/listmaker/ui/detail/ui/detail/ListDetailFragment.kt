@@ -24,7 +24,7 @@ class ListDetailFragment : Fragment() {
         fun newInstance() = ListDetailFragment()
     }
 
-    private lateinit var viewModel: ListDetailViewModel
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,8 +38,11 @@ class ListDetailFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel =
-            ViewModelProvider(requireActivity()).get(ListDetailViewModel::class.java)
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            MainViewModelFactory(PreferenceManager.getDefaultSharedPreferences(requireActivity())))
+                .get(MainViewModel::class.java)
+
         val list: TaskList? = arguments?.getParcelable(MainActivity.INTENT_LIST_KEY)
         if(list != null){
             viewModel.list = list
